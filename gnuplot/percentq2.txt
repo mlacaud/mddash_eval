@@ -1,0 +1,18 @@
+set terminal svg size 1280,720
+set output 'percentq.svg'
+set boxwidth 0.9 absolute
+set style fill   solid 1.00 border lt -1
+set key outside right top vertical Right noreverse noenhanced autotitle nobox
+set style histogram clustered gap 5 title textcolor lt -1
+set datafile missing '-'
+set style data histograms
+set xtics border in scale 0,0 nomirror
+set xtics  norangelimit
+set xtics   ()
+set title "Percent bandwidth"
+
+#plot for [COL=2:11] '../plot/percentqout.txt' using COL:xtic(1) ti col
+plot for [COL=2:11] newhistogram "NP 1", \
+ for [COL=2:9] '../plot/percentqout.txt' using COL:xtic(1) ti col, \
+newhistogram "NP 1",\
+for [COL=10:11] '../plot/percentqout.txt' using COL:xtic(1) ti col,
