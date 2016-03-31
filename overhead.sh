@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ $# -ne 2 ]
 then
-  echo "Please write : ./overheadgraph.sh [nbprofiles] [nbtests]"
+  echo "Please write : ./overhead.sh [nbprofiles] [nbtests]"
 else
   mkdir plot
   folder1=mddash/DescriptionStats
@@ -39,7 +39,6 @@ echo nbprofiles $nbprofiles
         file3=$folder/Description3_np${i}_test${j}.txt
 
         ./parsing_logs_bash.sh ${file1} ${file2} ${file3} tmp.txt
-
 
         echo `awk 'NR==16{print $2}' tmp.txt` >> tmp$k.txt
       done

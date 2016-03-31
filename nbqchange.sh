@@ -41,13 +41,12 @@ echo nbprofiles $nbprofiles
 
         ./parsing_logs_bash.sh ${file1} ${file2} ${file3} tmp.txt
 
-
         echo `awk 'NR==3{print $5}' tmp.txt` >> tmp$k.txt
       done
     done
 
-    mean1=`awk 'NR>0{v+=$1;count++}END{print v/count}' tmp1.txt`
-    mean2=`awk 'NR>0{v+=$1;count++}END{print v/count}' tmp2.txt`
+    mean1=`awk 'NR>0{v+=$1;count++}END{print (v/count)/2}' tmp1.txt`
+    mean2=`awk 'NR>0{v+=$1;count++}END{print (v/count)/2}' tmp2.txt`
 
     echo ${i} ${mean1} ${mean2} >> plot/nbqchangeout.txt
 

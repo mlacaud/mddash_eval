@@ -1,5 +1,5 @@
 set terminal svg size 1280,720
-set output 'nbqchange.svg'
+set output 'gnuplot/svg/nbqchange.svg'
 set boxwidth 0.9 absolute
 set style fill   solid 1.00 border lt -1
 set key outside right top vertical Right noreverse noenhanced autotitle nobox
@@ -11,4 +11,4 @@ set xtics  norangelimit
 set xtics   ()
 set title "Number of quality change over 20 tests"
 
-plot for [COL=2:3] '../plot/nbqchangeout.txt' using COL:xtic(1) ti col
+plot for [COL=2:3] 'plot/nbqchangeout.txt' using COL:xtic(1) ti col

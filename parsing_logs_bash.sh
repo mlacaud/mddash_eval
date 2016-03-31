@@ -28,7 +28,7 @@ declare -A q
 
 declare -A line_q
 ##### ------ ------ #####
-rebuflog="./results/test/Fri_Mar_25_16_43_53_CET_2016_Rebuff.txt"
+rebuflog="mddash/RebufferingStats/Rebuff_np0_test1.txt"
 #~ des1log="./results/test/Fri_Mar_25_16_55_58_CET_2016_Description1.txt"
 #~ des2log="./results/test/des2.txt"
 #~ des3log="./results/test/Fri_Mar_25_16_55_58_CET_2016_Description1.txt"

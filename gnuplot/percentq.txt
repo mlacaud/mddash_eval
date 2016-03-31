@@ -1,5 +1,5 @@
 set terminal svg size 1280,720
-set output 'percentq.svg'
+set output 'gnuplot/svg/percentq.svg'
 set boxwidth 0.9 absolute
 set style fill solid 1.00 border lt -1
 set key outside right top vertical Right noreverse noenhanced autotitle nobox
@@ -12,7 +12,7 @@ set xtics   ()
 set title "Percent bandwidth"
 
 plot \
-'../plot/percentqout.txt' using 2:xtic(1) ti col lc rgb "#FF0000", \
+'plot/percentqout.txt' using 2:xtic(1) ti col lc rgb "#FF0000", \
 '' u 3 ti col lc rgb "#FF8000", \
 '' u 4 ti col lc rgb "#FFFF00", \
 '' u 5 ti col lc rgb "#80FF00", \
@@ -20,8 +20,7 @@ plot \
 '' u 7 ti col lc rgb "#008000", \
 '' u 8 ti col lc rgb "#0080FF", \
 '' u 9 ti col lc rgb "#0000FF", \
-'',
-'' u 10 ti col lc rgb "#FF8000"\
+'' u 10 ti col lc rgb "#FF8000",\
 '' u 11 ti col lc rgb "#0000FF",
 
 
