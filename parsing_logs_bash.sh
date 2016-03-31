@@ -1,6 +1,6 @@
 #!/bin/bash
 #1 - Create database
-#2 - Fill in database with data 
+#2 - Fill in database with data
 
 
 if [ $# -ne 4 ]
@@ -12,7 +12,7 @@ fi
 declare -A des1_ind;
 declare -A des1_q
 declare -A des1_dropped
- 
+
 declare -A des2_ind
 declare -A des2_q
 declare -A des2_dropped
@@ -20,7 +20,7 @@ declare -A des2_dropped
 declare -A des3_ind
 declare -A des3_q
 declare -A des3_dropped
- 
+
 declare -A final_ind
 declare -A final_q
 declare -A final_overhead;
@@ -135,30 +135,30 @@ done
 for i in $(seq $d1lineN); do
 	final_ind[$i]=${des1_ind[$i]};
 done;
-	
+
 # Fill final_q // final_q is a matrix which contains in the rows the segment ID and in the columns contribution of other des
 for i in $(seq $d1lineN); do
 	# 1 2 and 3 for the description number
 	final_q[$i,1]=${des1_q[$i]};
 	final_q[$i,2]=${des2_q[$i]};
 	final_q[$i,3]=${des3_q[$i]};
-	
+
 	if [ ${des1_dropped[$i]} = 1 ]
 	then
 		final_q[$i,1]=-1;
 		#echo "put at -1";
 		#echo ${final_q[$i,1]};
 	fi
-	
-	if [ ${des2_dropped[$i]} = 1 ] 
+
+	if [ ${des2_dropped[$i]} = 1 ]
 	then
 		final_q[$i,2]=-1;
 	fi
-	
-	if [ ${des3_dropped[$i]} = 1 ] 
+
+	if [ ${des3_dropped[$i]} = 1 ]
 	then
 		final_q[$i,3]=-1;
-	fi	
+	fi
 done;
 
 for i in $(seq $d1lineN); do
@@ -166,7 +166,7 @@ for i in $(seq $d1lineN); do
 	flag1=0;
 	flag2=0;
 	flag3=0;
-	
+
 	case "${final_q[$i,1]}" in
 	0)  q[0,1]=$((${q[0,1]}+1));
 	    ;;
@@ -232,7 +232,7 @@ for i in $(seq $d1lineN); do
 	*) echo "PROBLEM!!!!----"
 		;;
 	esac
-	#~ 
+	#~
 	#~ #if toute les description ont été perdu
 	#~ if [ $flag1 = 1 ] && [ $flag2 = 1 ] && [ $flag3 = 1 ]
 	#~ then
@@ -250,12 +250,12 @@ for i in $(seq $d1lineN); do
 		#~ fi
 	#~ elif [ $flag1 = 1 ] && [ $flag3 = 1 ]
 	#~ then
-		#~ if [ ${final_q[$i,2]} = 6 ] 
+		#~ if [ ${final_q[$i,2]} = 6 ]
 		#~ then
 			#~ q[8,1]=$((${q[8,1]}+1));
 			#~ echo "adding quality of description 2, ${q[8,0]}";
-		#~ elif [ ${final_q[$i,2]} = 5 ] 
-		#~ then 
+		#~ elif [ ${final_q[$i,2]} = 5 ]
+		#~ then
 			#~ q[8,1]=$((${q[8,1]}+1));
 			#~ #echo "adding quality of description 2, ${q[8,0]}";
 		#~ else
@@ -356,7 +356,7 @@ for i in $(seq $d1lineN); do
 		;;
 	esac
 	j=$(($j+1));
-	
+
 	case "${final_q[$i,2]}" in
 	0) line_q[$j]=${q[0,0]};
 	    ;;
@@ -379,7 +379,7 @@ for i in $(seq $d1lineN); do
 		;;
 	esac
 	j=$(($j+1));
-	
+
 	case "${final_q[$i,3]}" in
 	0) line_q[$j]=${q[0,0]};
 	    ;;
@@ -414,9 +414,9 @@ do
 	if [ "${line_q[$i]}" != "${line_q[$((i+1))]}" ]
 	then
 		if [ "${line_q[$((i+1))]}" = "" ]
-		then 
+		then
 			echo "... done!";
-		else	
+		else
 			changeCnt=$((changeCnt+1));
 			val=$((${line_q[$i]}-${line_q[$((i+1))]}));
 			val=${val/-/};
@@ -445,10 +445,10 @@ do
 		[[ ${des3_q[$i]} -gt 5 ]] && tmp3=$((2*400)) || tmp3=$((2*200));
 		tmp=$(($tmp1+$tmp2+$tmp3));
 		ove_tmp=$(($ove_tmp+$tmp));
-		transit_tmp=$(($transit_tmp+${q[${des1_q[$i]},0]}+${q[${des2_q[$i]},0]}+${q[${des3_q[$i]},0]}+$tmp1+$tmp2+$tmp3));		
+		transit_tmp=$(($transit_tmp+${q[${des1_q[$i]},0]}+${q[${des2_q[$i]},0]}+${q[${des3_q[$i]},0]}+$tmp1+$tmp2+$tmp3));
 		#echo "overhead is $ove_tmp | transit is $transit_tmp | overhead for this turn $tmp";
 	elif [ ${des1_dropped[$i]} = 0 ] && [ ${des2_dropped[$i]} = 0 ]
-	then 
+	then
 		tmp=0;
 		tmp1=0;
 		tmp2=0;
@@ -457,7 +457,7 @@ do
 		[[ ${des2_q[$i]} -gt 5 ]] && tmp2=$((2*400)) || tmp1=$((2*200));
 		tmp=$(($tmp1+$tmp2));
 		ove_tmp=$(($ove_tmp+$tmp));
-		transit_tmp=$(($transit_tmp+${q[${des1_q[$i]},0]}+${q[${des2_q[$i]},0]}+$tmp1+$tmp2));		
+		transit_tmp=$(($transit_tmp+${q[${des1_q[$i]},0]}+${q[${des2_q[$i]},0]}+$tmp1+$tmp2));
 		#echo "overhead is $ove_tmp | transit is $transit_tmp | overhead for this turn $tmp";
 	elif [ ${des2_dropped[$i]} = 0 ] && [ ${des3_dropped[$i]} = 0 ]
 	then
@@ -469,8 +469,8 @@ do
 		[[ ${des3_q[$i]} -gt 5 ]] && tmp3=$((2*400)) || tmp3=$((2*200));
 		tmp=$(($tmp2+$tmp3));
 		ove_tmp=$(($ove_tmp+$tmp));
-		transit_tmp=$(($transit_tmp+${q[${des2_q[$i]},0]}+${q[${des3_q[$i]},0]}+$tmp2+$tmp3));		
-		#echo "overhead is $ove_tmp | transit is $transit_tmp | overhead for this turn $tmp";	
+		transit_tmp=$(($transit_tmp+${q[${des2_q[$i]},0]}+${q[${des3_q[$i]},0]}+$tmp2+$tmp3));
+		#echo "overhead is $ove_tmp | transit is $transit_tmp | overhead for this turn $tmp";
 	elif [ ${des1_dropped[$i]} = 0 ] && [ ${des3_dropped[$i]} = 0 ]
 	then
 		tmp=0;
@@ -481,14 +481,14 @@ do
 		[[ ${des3_q[$i]} -gt 5 ]] && tmp3=$((2*400)) || tmp3=$((2*200));
 		tmp=$(($tmp1+$tmp3));
 		ove_tmp=$(($ove_tmp+$tmp));
-		transit_tmp=$(($transit_tmp+${q[${des1_q[$i]},0]}+${q[${des3_q[$i]},0]}+$tmp1+$tmp3));		
-		#echo "overhead is $ove_tmp | transit is $transit_tmp | overhead for this turn $tmp";	
+		transit_tmp=$(($transit_tmp+${q[${des1_q[$i]},0]}+${q[${des3_q[$i]},0]}+$tmp1+$tmp3));
+		#echo "overhead is $ove_tmp | transit is $transit_tmp | overhead for this turn $tmp";
 	else
 		echo "no overhead!";
 	fi
 done
 
-#~ 
+#~
 		#~ if [ ${final_q[$i,1]} != -1 ]
 		#~ then
 			#~ ove_tmp=0;
@@ -501,13 +501,13 @@ done
 				#~ else
 					#~ ove_tmp=$(($ove_tmp+200))
 				#~ fi
-	#~ 
+	#~
 			#~ fi
-		#~ else 
-			#~ 
+		#~ else
+			#~
 		#~ fi
-	#~ 
-	#~ 
+	#~
+	#~
 
 # % quality
 a=`echo "${q[0,1]} / $segmentNb" | bc -l`;
@@ -538,7 +538,7 @@ echo "-----------------------------
 amplitudebandwidth cumudiff changecnt
 $mean_amplitude_change - $cumulatedDiff - $changeCnt
 -----------------------------
-Q Nb_of_segment % 
+Q Nb_of_segment %
 ${q[0,0]} ${q[0,1]} $a
 ${q[1,0]} ${q[1,1]} $b
 ${q[2,0]} ${q[2,1]} $c
@@ -555,7 +555,7 @@ echo "-----------------------------
 amplitudebandwidth cumudiff changecnt
 $mean_amplitude_change - $cumulatedDiff - $changeCnt
 -----------------------------
-Q Nb_of_segment % 
+Q Nb_of_segment %
 ${q[0,0]} ${q[0,1]} $a
 ${q[1,0]} ${q[1,1]} $b
 ${q[2,0]} ${q[2,1]} $c
@@ -569,16 +569,3 @@ ${q[8,0]} ${q[8,1]} $i
 overhead $overhead % "
 
 # Fill final_overhead
-
-
-
-
-
-
-
-
-
-
-
-
-
