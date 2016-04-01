@@ -1,0 +1,2 @@
+NetworkProfiles mddash200 mddash400 mddash1M mddash1M6 mddash2M mddash3M mddash4M mddash6M
+0 0.371747 1.85873 1.11524 0 0.185873 0.92937 5.94797 89.9628

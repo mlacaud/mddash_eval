@@ -3,7 +3,7 @@ if [ $# -ne 2 ]
 then
   echo "Please write : ./rebuff.sh [nbprofiles] [nbtests}"
 else
-  mkdir plot
+  mkdir parsed
   folder1=mddash/RebufferingStats
   folder2=mdc/RebufferingStats
   nbprofiles=$(($1 - 1))
@@ -13,7 +13,7 @@ else
 
 echo nbtest $nbtest
 echo nbprofiles $nbprofiles
-  echo 'NetworkProfiles mddash mdc' > plot/rebuffout.txt
+  echo 'NetworkProfiles mddash mdc' > parsed/rebuffout.txt
 
   >tmp1.txt
   >tmp2.txt
@@ -36,16 +36,16 @@ echo nbprofiles $nbprofiles
 
         file1=$folder/Rebuff_np${i}_test${j}.txt
 
-        result=`bash parsing_rebuff.sh $file1`
+        result=`bash tools/parsing_rebuff.sh $file1`
 
-        echo `bash parsing_rebuff.sh $file1` >> tmp$k.txt
+        echo `bash tools/parsing_rebuff.sh $file1` >> tmp$k.txt
       done
     done
 
     mean1=`awk 'NR>0{v+=$1;count++}END{print v/'$nbtest'}' tmp1.txt`
     mean2=`awk 'NR>0{v+=$1;count++}END{print v/'$nbtest'}' tmp2.txt`
 
-    echo ${i} ${mean1} ${mean2} >> plot/rebuffout.txt
+    echo ${i} ${mean1} ${mean2} >> parsed/rebuffout.txt
 
     >tmp1.txt
     >tmp2.txt

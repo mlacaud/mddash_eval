@@ -12,7 +12,7 @@ set xtics   ()
 set title "Percent bandwidth"
 
 plot \
-'toplot/percentqout.txt' using 2:xtic(1) ti col lc rgb "#FF0000", \
+'toplot/percentq2out.txt' using 2:xtic(1) ti col lc rgb "#FF0000", \
 '' u 3 ti col lc rgb "#FF8000", \
 '' u 4 ti col lc rgb "#FFFF00", \
 '' u 5 ti col lc rgb "#80FF00", \

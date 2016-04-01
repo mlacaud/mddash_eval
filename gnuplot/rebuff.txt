@@ -11,4 +11,4 @@ set xtics  norangelimit
 set xtics   ()
 set title "Rebuffering per video"
 
-plot for [COL=2:3] 'plot/rebuffout.txt' using COL:xtic(1) ti col
+plot for [COL=2:7] 'toplot/rebuffout.txt' using COL:xtic(1) ti col

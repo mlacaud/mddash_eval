@@ -1,0 +1,7 @@
+dash_oracle_3S_1M dash_oracle_3S_1M6 dash_oracle_3S_2M dash_oracle_3S_3M dash_oracle_3S_4M dash_oracle_3S_6M
+0 0 12.5 12.5 69 0
+0 0 12.5 12.5 69 0
+0 0 12.5 12.5 69 0
+8.33 0 16.66 0 25 50
+8.33 0 16.66 0 25 50
+8.33 0 16.66 0 25 50

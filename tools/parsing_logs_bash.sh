@@ -1,11 +1,11 @@
 #!/bin/bash
 #1 - Create database
-#2 - Fill in database with data
+#2 - Fill in database with data 
 
 
-if [ $# -ne 4 ]
+if [ $# -ne 5 ]
 then
-	echo "usage exec des1logfile des2logfile des3logfile outputfile";
+	echo "usage exec des1logfile des2logfile des3logfile outputfile mdc/mddash";
 	exit;
 fi
 
@@ -20,15 +20,15 @@ declare -A des2_dropped
 declare -A des3_ind
 declare -A des3_q
 declare -A des3_dropped
-
+ 
 declare -A final_ind
-declare -A final_q
+declare -A final_q;
 declare -A final_overhead;
 declare -A q
 
 declare -A line_q
 ##### ------ ------ #####
-rebuflog="mddash/RebufferingStats/Rebuff_np0_test1.txt"
+rebuflog="./results/test/Fri_Mar_25_16_43_53_CET_2016_Rebuff.txt"
 #~ des1log="./results/test/Fri_Mar_25_16_55_58_CET_2016_Description1.txt"
 #~ des2log="./results/test/des2.txt"
 #~ des3log="./results/test/Fri_Mar_25_16_55_58_CET_2016_Description1.txt"
@@ -36,6 +36,7 @@ des1log=$1
 des2log=$2
 des3log=$3
 outputfile=$4
+type=$5;
 
 #delete first useless line
 word=`awk NR==1'{print $1}' $des1log`;
@@ -83,16 +84,35 @@ for i in $(seq $d1lineN); do
 done
 
 # Prepare quality variables for final results
-q[0,0]=1000
-q[1,0]=1600;
-q[2,0]=2000;
-q[3,0]=3000;
-q[4,0]=4000;
-q[5,0]=6000;
-q[6,0]=9000;
-q[7,0]=200;
-q[8,0]=400;
 
+if [ $type = "mddash" ]
+then 
+	q[0,0]=1000
+	q[1,0]=1600;
+	q[2,0]=2000;
+	q[3,0]=3000;
+	q[4,0]=4000;
+	q[5,0]=6000;
+	q[6,0]=9000;
+	q[7,0]=200;
+	q[8,0]=400;
+	
+
+elif [ $type = "mdc" ]
+then
+	q[0,0]=6000
+	q[1,0]=000;
+	q[2,0]=0000;
+	q[3,0]=0000;
+	q[4,0]=00;
+	q[5,0]=000;
+	q[6,0]=000;
+	q[7,0]=400;
+	q[8,0]=400;
+else
+	echo "wrong type passed in parameters!";
+	exit;
+fi
 q[0,1]=0
 q[1,1]=0;
 q[2,1]=0;
@@ -135,30 +155,30 @@ done
 for i in $(seq $d1lineN); do
 	final_ind[$i]=${des1_ind[$i]};
 done;
-
+	
 # Fill final_q // final_q is a matrix which contains in the rows the segment ID and in the columns contribution of other des
 for i in $(seq $d1lineN); do
 	# 1 2 and 3 for the description number
 	final_q[$i,1]=${des1_q[$i]};
 	final_q[$i,2]=${des2_q[$i]};
 	final_q[$i,3]=${des3_q[$i]};
-
+	
 	if [ ${des1_dropped[$i]} = 1 ]
 	then
 		final_q[$i,1]=-1;
 		#echo "put at -1";
 		#echo ${final_q[$i,1]};
 	fi
-
-	if [ ${des2_dropped[$i]} = 1 ]
+	
+	if [ ${des2_dropped[$i]} = 1 ] 
 	then
 		final_q[$i,2]=-1;
 	fi
-
-	if [ ${des3_dropped[$i]} = 1 ]
+	
+	if [ ${des3_dropped[$i]} = 1 ] 
 	then
 		final_q[$i,3]=-1;
-	fi
+	fi	
 done;
 
 for i in $(seq $d1lineN); do
@@ -166,7 +186,7 @@ for i in $(seq $d1lineN); do
 	flag1=0;
 	flag2=0;
 	flag3=0;
-
+	
 	case "${final_q[$i,1]}" in
 	0)  q[0,1]=$((${q[0,1]}+1));
 	    ;;
@@ -183,7 +203,9 @@ for i in $(seq $d1lineN); do
 	6)  q[6,1]=$((${q[6,1]}+1));
 	    ;;
 	-1) flag1=1;
-	q[8,1]=$((${q[8,1]}+1))
+		max=-1;
+		[[ ${final_q[$i, 2]} -ge ${final_q[$i,3]} ]] && max=${final_q[$i,2]} || max=${final_q[$i,3]}
+		[[ $max -ge 5 ]] && q[8,1]=$((${q[8,1]}+1)) || q[7,1]=$((${q[7,1]}+1));
 	    ;;
 	*) echo "PROBLEM!!!!"
 		;;
@@ -205,9 +227,11 @@ for i in $(seq $d1lineN); do
 	6)  q[6,1]=$((${q[6,1]}+1));
 	    ;;
 	-1) flag2=1;
-	q[8,1]=$((${q[8,1]}+1))
-	    ;;
-	*) echo "PROBLEM!!!!??? ${final_q[$i,2]} "
+		max=-1;
+		[[ ${final_q[$i,1]} -ge ${final_q[$i,3]} ]] && max=${final_q[$i,1]} || max=${final_q[$i,3]};
+		[[ $max -ge 5 ]] && q[8,1]=$((${q[8,1]}+1)) || q[7,1]=$((${q[7,1]}+1));	
+		;;
+	*) echo "PROBLEM!!!!??? ${final_q[$i,2]}"
 		;;
 	esac
 
@@ -227,12 +251,14 @@ for i in $(seq $d1lineN); do
 	6)  q[6,1]=$((${q[6,1]}+1));
 	    ;;
 	-1)  flag3=1;
-	q[8,1]=$((${q[8,1]}+1))
+		max=-1;
+		[[ ${final_q[$i,1]} -ge ${final_q[$i,2]} ]] && max=${final_q[$i,1]} || max=${final_q[$i,2]};
+		[[ $max -ge 5 ]] && q[8,1]=$((${q[8,1]}+1)) || q[7,1]=$((${q[7,1]}+1));
 	    ;;
 	*) echo "PROBLEM!!!!----"
 		;;
 	esac
-	#~
+	#~ 
 	#~ #if toute les description ont été perdu
 	#~ if [ $flag1 = 1 ] && [ $flag2 = 1 ] && [ $flag3 = 1 ]
 	#~ then
@@ -250,12 +276,12 @@ for i in $(seq $d1lineN); do
 		#~ fi
 	#~ elif [ $flag1 = 1 ] && [ $flag3 = 1 ]
 	#~ then
-		#~ if [ ${final_q[$i,2]} = 6 ]
+		#~ if [ ${final_q[$i,2]} = 6 ] 
 		#~ then
 			#~ q[8,1]=$((${q[8,1]}+1));
 			#~ echo "adding quality of description 2, ${q[8,0]}";
-		#~ elif [ ${final_q[$i,2]} = 5 ]
-		#~ then
+		#~ elif [ ${final_q[$i,2]} = 5 ] 
+		#~ then 
 			#~ q[8,1]=$((${q[8,1]}+1));
 			#~ #echo "adding quality of description 2, ${q[8,0]}";
 		#~ else
@@ -350,13 +376,13 @@ for i in $(seq $d1lineN); do
 	6) line_q[$j]=${q[6,0]};
 	    ;;
 	-1) flag1=1;
-		line_q[$j]=${q[8,0]};
+		[[ ${final_q[$i,3]} -ge 5 ]] && line_q[$j]=${q[8,0]} || line_q[$j]=${q[7,0]};
 	    ;;
 	*) echo "PROBLEM!!!! with 1 ${final_q[$i,1]}"
 		;;
 	esac
 	j=$(($j+1));
-
+	
 	case "${final_q[$i,2]}" in
 	0) line_q[$j]=${q[0,0]};
 	    ;;
@@ -373,13 +399,13 @@ for i in $(seq $d1lineN); do
 	6) line_q[$j]=${q[6,0]};
 	    ;;
 	-1) flag1=1;
-		line_q[$j]=${q[8,0]};
+		[[ ${final_q[$i,1]} -ge 5 ]] && line_q[$j]=${q[8,0]} || line_q[$j]=${q[7,0]};
 	    ;;
 	*) echo "PROBLEM!!!!??? with 2 ${final_q[$i,2]}"
 		;;
 	esac
 	j=$(($j+1));
-
+	
 	case "${final_q[$i,3]}" in
 	0) line_q[$j]=${q[0,0]};
 	    ;;
@@ -396,7 +422,7 @@ for i in $(seq $d1lineN); do
 	6) line_q[$j]=${q[6,0]};
 	    ;;
 	-1) flag1=1;
-		line_q[$j]=${q[8,0]};
+		[[ ${final_q[$i,2]} -ge 5 ]] && line_q[$j]=${q[8,0]} || line_q[$j]=${q[7,0]};
 	    ;;
 	*) echo "PROBLEM!!!!---- with 3 ${final_q[$i,3]}"
 		;;
@@ -414,15 +440,16 @@ do
 	if [ "${line_q[$i]}" != "${line_q[$((i+1))]}" ]
 	then
 		if [ "${line_q[$((i+1))]}" = "" ]
-		then
+		then 
 			echo "... done!";
-		else
+		else	
 			changeCnt=$((changeCnt+1));
 			val=$((${line_q[$i]}-${line_q[$((i+1))]}));
 			val=${val/-/};
 			cumulatedDiff=$(($cumulatedDiff+$val));
 		fi
 	fi
+	#echo ${line_q[$i]};
 done
 
 # Compute overhead
@@ -440,24 +467,39 @@ do
 		tmp2=0;
 		tmp3=0;
 		tmp=0;
-		[[ ${des1_q[$i]} -gt 5 ]] && tmp1=$((2*400)) || tmp1=$((2*200));
-		[[ ${des2_q[$i]} -gt 5 ]] && tmp2=$((2*400)) || tmp2=$((2*200));
-		[[ ${des3_q[$i]} -gt 5 ]] && tmp3=$((2*400)) || tmp3=$((2*200));
-		tmp=$(($tmp1+$tmp2+$tmp3));
-		ove_tmp=$(($ove_tmp+$tmp));
-		transit_tmp=$(($transit_tmp+${q[${des1_q[$i]},0]}+${q[${des2_q[$i]},0]}+${q[${des3_q[$i]},0]}+$tmp1+$tmp2+$tmp3));
+		[[ ${des1_q[$i]} -ge 5 ]] && tmp1=$((2*400)) || tmp1=$((2*200));
+		[[ ${des2_q[$i]} -ge 5 ]] && tmp2=$((2*400)) || tmp2=$((2*200));
+		[[ ${des3_q[$i]} -ge 5 ]] && tmp3=$((2*400)) || tmp3=$((2*200));
+		if [ $type = "mddash" ]
+		then 
+			tmp=$((2*$tmp1+$tmp2+$tmp3));
+			ove_tmp=$(($ove_tmp+$tmp));
+			transit_tmp=$(($transit_tmp+${q[${des1_q[$i]},0]}+${q[${des2_q[$i]},0]}+${q[${des3_q[$i]},0]}+2*$tmp1+2*$tmp2+2*$tmp3));		
+		else
+			tmp=$((2*400+2*400+400));
+			ove_tmp=$(($ove_tmp+$tmp));
+			transit_tmp=$(($transit_tmp+${q[${des1_q[$i]},0]}+${q[${des2_q[$i]},0]}+${q[${des3_q[$i]},0]}+2*$tmp1+2*$tmp2+2*$tmp3));		
+		fi
+		
 		#echo "overhead is $ove_tmp | transit is $transit_tmp | overhead for this turn $tmp";
 	elif [ ${des1_dropped[$i]} = 0 ] && [ ${des2_dropped[$i]} = 0 ]
-	then
+	then 
 		tmp=0;
 		tmp1=0;
 		tmp2=0;
 		tmp3=0;
-		[[ ${des1_q[$i]} -gt 5 ]] && tmp1=$((2*400)) || tmp1=$((2*200));
-		[[ ${des2_q[$i]} -gt 5 ]] && tmp2=$((2*400)) || tmp1=$((2*200));
-		tmp=$(($tmp1+$tmp2));
-		ove_tmp=$(($ove_tmp+$tmp));
-		transit_tmp=$(($transit_tmp+${q[${des1_q[$i]},0]}+${q[${des2_q[$i]},0]}+$tmp1+$tmp2));
+		[[ ${des1_q[$i]} -ge 5 ]] && tmp1=$((2*400)) || tmp1=$((2*200));
+		[[ ${des2_q[$i]} -ge 5 ]] && tmp2=$((2*400)) || tmp2=$((2*200));
+		if [ $type = "mddash" ]
+		then 
+			tmp=$(($tmp1+$tmp2));
+			ove_tmp=$(($ove_tmp+$tmp));
+			transit_tmp=$(($transit_tmp+${q[${des1_q[$i]},0]}+${q[${des2_q[$i]},0]}+2*$tmp1+$tmp2));		
+		else
+			tmp=$((400+400));
+			ove_tmp=$(($ove_tmp+$tmp));
+			transit_tmp=$(($transit_tmp+${q[${des1_q[$i]},0]}+${q[${des2_q[$i]},0]}+2*$tmp1+$tmp2));		
+		fi
 		#echo "overhead is $ove_tmp | transit is $transit_tmp | overhead for this turn $tmp";
 	elif [ ${des2_dropped[$i]} = 0 ] && [ ${des3_dropped[$i]} = 0 ]
 	then
@@ -465,30 +507,44 @@ do
 		tmp1=0;
 		tmp2=0;
 		tmp3=0;
-		[[ ${des2_q[$i]} -gt 5 ]] && tmp2=$((2*400)) || tmp2=$((2*200));
-		[[ ${des3_q[$i]} -gt 5 ]] && tmp3=$((2*400)) || tmp3=$((2*200));
-		tmp=$(($tmp2+$tmp3));
-		ove_tmp=$(($ove_tmp+$tmp));
-		transit_tmp=$(($transit_tmp+${q[${des2_q[$i]},0]}+${q[${des3_q[$i]},0]}+$tmp2+$tmp3));
-		#echo "overhead is $ove_tmp | transit is $transit_tmp | overhead for this turn $tmp";
+		[[ ${des2_q[$i]} -ge 5 ]] && tmp2=$((2*400)) || tmp2=$((2*200));
+		[[ ${des3_q[$i]} -ge 5 ]] && tmp3=$((2*400)) || tmp3=$((2*200));
+		if [ $type = "mddash" ]
+		then 
+			tmp=$(($tmp2+$tmp3));
+			ove_tmp=$(($ove_tmp+$tmp));
+			transit_tmp=$(($transit_tmp+${q[${des2_q[$i]},0]}+${q[${des3_q[$i]},0]}+2*$tmp2+$tmp3));		
+		else
+			tmp=$((2*400+400));
+			ove_tmp=$(($ove_tmp+$tmp));
+			transit_tmp=$(($transit_tmp+${q[${des2_q[$i]},0]}+${q[${des3_q[$i]},0]}+2*$tmp2+$tmp3));		
+		fi
+		#echo "overhead is $ove_tmp | transit is $transit_tmp | overhead for this turn $tmp";	
 	elif [ ${des1_dropped[$i]} = 0 ] && [ ${des3_dropped[$i]} = 0 ]
 	then
 		tmp=0;
 		tmp1=0;
 		tmp2=0;
 		tmp3=0;
-		[[ ${des1_q[$i]} -gt 5 ]] && tmp1=$((2*400)) || tmp1=$((2*200));
-		[[ ${des3_q[$i]} -gt 5 ]] && tmp3=$((2*400)) || tmp3=$((2*200));
-		tmp=$(($tmp1+$tmp3));
-		ove_tmp=$(($ove_tmp+$tmp));
-		transit_tmp=$(($transit_tmp+${q[${des1_q[$i]},0]}+${q[${des3_q[$i]},0]}+$tmp1+$tmp3));
-		#echo "overhead is $ove_tmp | transit is $transit_tmp | overhead for this turn $tmp";
+		[[ ${des1_q[$i]} -ge 5 ]] && tmp1=$((2*400)) || tmp1=$((2*200));
+		[[ ${des3_q[$i]} -ge 5 ]] && tmp3=$((2*400)) || tmp3=$((2*200));
+		if [ $type = "mddash" ]
+		then 
+			tmp=$(($tmp1+$tmp3));
+			ove_tmp=$(($ove_tmp+$tmp));
+			transit_tmp=$(($transit_tmp+${q[${des1_q[$i]},0]}+${q[${des3_q[$i]},0]}+$tmp1+$tmp3));		
+		else
+			tmp=$((2*400+400));
+			ove_tmp=$(($ove_tmp+$tmp));
+			transit_tmp=$(($transit_tmp+${q[${des2_q[$i]},0]}+${q[${des3_q[$i]},0]}+2*$tmp1+$tmp3));		
+		fi
+			
 	else
 		echo "no overhead!";
 	fi
 done
 
-#~
+#~ 
 		#~ if [ ${final_q[$i,1]} != -1 ]
 		#~ then
 			#~ ove_tmp=0;
@@ -501,13 +557,13 @@ done
 				#~ else
 					#~ ove_tmp=$(($ove_tmp+200))
 				#~ fi
-	#~
+	#~ 
 			#~ fi
-		#~ else
-			#~
+		#~ else 
+			#~ 
 		#~ fi
-	#~
-	#~
+	#~ 
+	#~ 
 
 # % quality
 a=`echo "${q[0,1]} / $segmentNb" | bc -l`;
@@ -529,16 +585,22 @@ declare -A mean_amplitude_change;
 mean_aplitude_change=0;
 if [ $changeCnt != 0 ]
 then
-	cumulatedDiff=`echo "(($cumulatedDiff - 8000 * 30/100 * (${q[7,1]} + ${q[8,1]}) ))" | bc -l`;
+	if [ $type = "mddash"  ]
+	then
+		cumulatedDiff=`echo "(($cumulatedDiff - 8000 * 30/100 * (${q[7,1]} + ${q[8,1]}) ))" | bc -l`;
+	fi
 	mean_amplitude_change=`echo "$cumulatedDiff / $changeCnt" | bc -l`;
 fi
 
 #output result
-echo "-----------------------------
+
+if [ $type = "mddash" ]
+then 
+	echo "-----------------------------
 amplitudebandwidth cumudiff changecnt
 $mean_amplitude_change - $cumulatedDiff - $changeCnt
 -----------------------------
-Q Nb_of_segment %
+Q Nb_of_segment % 
 ${q[0,0]} ${q[0,1]} $a
 ${q[1,0]} ${q[1,1]} $b
 ${q[2,0]} ${q[2,1]} $c
@@ -551,11 +613,11 @@ ${q[8,0]} ${q[8,1]} $i
 -----------------------------
 overhead $overhead % " > $outputfile
 
-echo "-----------------------------
+	echo "-----------------------------
 amplitudebandwidth cumudiff changecnt
 $mean_amplitude_change - $cumulatedDiff - $changeCnt
 -----------------------------
-Q Nb_of_segment %
+Q Nb_of_segment % 
 ${q[0,0]} ${q[0,1]} $a
 ${q[1,0]} ${q[1,1]} $b
 ${q[2,0]} ${q[2,1]} $c
@@ -567,5 +629,43 @@ ${q[7,0]} ${q[7,1]} $h
 ${q[8,0]} ${q[8,1]} $i
 -----------------------------
 overhead $overhead % "
+else
+nb=$((${q[7,1]}+${q[8,1]}));
+nb1=`echo "$i + $h" | bc -l`;
 
+	echo "-----------------------------
+amplitudebandwidth cumudiff changecnt
+$mean_amplitude_change - $cumulatedDiff - $changeCnt
+-----------------------------
+Q Nb_of_segment % 
+${q[0,0]} ${q[0,1]} $a
+${q[7,0]} $nb $nb1;
+-----------------------------
+overhead $overhead % " > $outputfile
+	
+	echo "-----------------------------
+amplitudebandwidth cumudiff changecnt
+$mean_amplitude_change - $cumulatedDiff - $changeCnt
+-----------------------------
+Q Nb_of_segment % 
+${q[0,0]} ${q[0,1]} $a
+${q[7,0]} $nb $nb1;
+-----------------------------
+overhead $overhead % "
+	
+
+fi
 # Fill final_overhead
+
+
+
+
+
+
+
+
+
+
+
+
+

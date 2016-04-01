@@ -1,0 +1,7 @@
+mddash_oracle_3S_1M mddash_oracle_3S_1M6 mddash_oracle_3S_2M mddash_oracle_3S_3M mddash_oracle_3S_4M mddash_oracle_3S_6M
+0 0 0 0 0 100
+0 0 0 0 0 100
+0 0 0 0 0 100
+0 0 0 0 0 100
+0 0 0 0 0 100
+0 0 0 0 0 100

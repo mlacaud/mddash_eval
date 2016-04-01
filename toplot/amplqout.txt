@@ -1,0 +1,7 @@
+NetworkProfiles mddash mdc	dash_oracle_3S	dash_oracle_9S	mddash_oracle_3S	mddash_oracle_9S
+0 2654.51 -1195.91	757	0	 0	0
+1 2688.68 -931.054	757	0	 0	0
+2 2876.66 -983.211	757	0	 0	0
+3 2617.89 -999.426	1853	0	 0	0
+4 2781.6 -1020.8	1853	0	 0	0
+	1853	0	 0	0
