@@ -11,4 +11,4 @@ set xtics  norangelimit
 set xtics   ()
 set title "Amplitude of the quality variations"
 
-plot for [COL=2:7] 'toplot/amplqout.txt' using COL:xtic(1) ti col
+plot for [COL=2:8] 'toplot/amplqout.txt' using COL:xtic(1) ti col

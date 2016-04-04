@@ -11,4 +11,4 @@ set xtics  norangelimit
 set xtics   ()
 set title "Number of quality change per 8min of video"
 
-plot for [COL=2:7] 'toplot/nbqchangeout.txt' using COL:xtic(1) ti col
+plot for [COL=2:8] 'toplot/nbqchangeout.txt' using COL:xtic(1) ti col

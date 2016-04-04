@@ -11,4 +11,4 @@ set xtics  norangelimit
 set xtics   ()
 set title "Percent of overhead"
 
-plot for [COL=2:7] 'toplot/overheadout.txt' using COL:xtic(1) ti col
+plot for [COL=2:8] 'toplot/overheadout.txt' using COL:xtic(1) ti col
