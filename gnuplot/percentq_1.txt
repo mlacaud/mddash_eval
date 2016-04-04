@@ -11,10 +11,32 @@ set xtics  norangelimit
 set xtics   ()
 set title "Percent of every bitrate for the 3 servers testbed"
 
-plot newhistogram "mdc", for [COL=2:4] 'toplot/percentqout.txt' using COL:xtic(1) ti col,\
-newhistogram "mddash 3S", for [COL=5:12] 'toplot/percentqout.txt' using COL:xtic(1) ti col,\
-newhistogram "dash oracle 3S", for [COL=13:18] 'toplot/percentqout.txt' using COL:xtic(1) ti col,\
-newhistogram "mddash oracle 3S", for [COL=18:22] 'toplot/percentqout.txt' using COL:xtic(1) ti col
+plot newhistogram "mdc",\
+'toplot/percentqout.txt' using 10:xtic(1) ti col lc rgb "#FF8000",\
+'' u 11 ti col lc rgb "#0000FF", \
+newhistogram "mddash 3S",\
+'toplot/percentqout.txt' using 2:xtic(1) ti col lc rgb "#FF0000",\
+'' u 3 ti col lc rgb "#FF8000", \
+'' u 4 ti col lc rgb "#FFFF00", \
+'' u 5 ti col lc rgb "#80FF00", \
+'' u 6 ti col lc rgb "#00FF00", \
+'' u 7 ti col lc rgb "#008000", \
+'' u 8 ti col lc rgb "#0080FF", \
+'' u 9 ti col lc rgb "#0000FF", \
+newhistogram "dash oracle 3S",\
+'toplot/percentqout.txt' using 12:xtic(1) ti col lc rgb "#FFFF00",\
+'' u 13 ti col lc rgb "#80FF00", \
+'' u 14 ti col lc rgb "#00FF00", \
+'' u 15 ti col lc rgb "#008000", \
+'' u 16 ti col lc rgb "#0080FF", \
+'' u 17 ti col lc rgb "#0000FF", \
+newhistogram "mddash oracle 3S",\
+'toplot/percentqout.txt' using 18:xtic(1) ti col lc rgb "#FFFF00",\
+'' u 19 ti col lc rgb "#80FF00", \
+'' u 20 ti col lc rgb "#00FF00", \
+'' u 21 ti col lc rgb "#008000", \
+'' u 22 ti col lc rgb "#0080FF", \
+'' u 23 ti col lc rgb "#0000FF"
 
 #plot \
 #'toplot/percentqout.txt' using 2:xtic(1) ti col lc rgb "#FF0000", \

@@ -11,7 +11,7 @@ set xtics  norangelimit
 set xtics   ()
 set title "Percent of every bitrate for the 3 servers testbed"
 
-plot for [COL=2:22] 'toplot/percentqout.txt' using COL:xtic(1) ti col
+#plot for [COL=2:22] 'toplot/percentqout.txt' using COL:xtic(1) ti col
 
 #plot \
 #'toplot/percentqout.txt' using 2:xtic(1) ti col lc rgb "#FF0000", \
