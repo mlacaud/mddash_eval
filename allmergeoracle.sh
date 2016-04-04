@@ -48,7 +48,7 @@ paste toplot/tmp.txt resultsoracles/mddash3S/percentqout.txt > toplot/percentqou
 rm toplot/tmp.txt
 
 #Percent 9S
-paste parsed/percentqout.txt resultsoracles/dash9S/percentqout.txt > toplot/tmp.txt
-paste toplot/tmp.txt resultsoracles/mddash9S/percentqout.txt > toplot/percentqout.txt
+paste parsed/percentq2out.txt resultsoracles/dash9S/percentqout.txt > toplot/tmp.txt
+paste toplot/tmp.txt resultsoracles/mddash9S/percentqout.txt > toplot/percentq2out.txt
 
 rm toplot/tmp.txt

@@ -52,7 +52,7 @@ echo nbprofiles $nbprofiles
             then
               echo `awk 'NR==13{print ($3*100)}' tmp.txt` >> tmp$l.txt
           fi
-          if [ $l = 2 ] || [ $l = 9 ]
+          if [ $l = 2 ]
             then
               echo `awk 'NR==14{print ($3*100)}' tmp.txt` >> tmp$l.txt
           fi
@@ -60,7 +60,7 @@ echo nbprofiles $nbprofiles
             then
               echo `awk 'NR==6{print ($3*100)}' tmp.txt` >> tmp$l.txt
           fi
-          if [ $l = 4 ]
+          if [ $l = 4 ] || [ $l = 9 ]
             then
               echo `awk 'NR==7{print ($3*100)}' tmp.txt` >> tmp$l.txt
           fi
@@ -92,7 +92,7 @@ echo nbprofiles $nbprofiles
       mean=("${mean[@]}" `awk 'NR>0{v+=$1;count++}END{print v/count}' tmp${l}.txt`)
     done
 
-    echo ${i} ${mean[@]} >> parsed/percentqout.txt
+    echo $(($i+1)) ${mean[@]} >> parsed/percentqout.txt
     for l in `seq 1 10`
     do
       >tmp${l}.txt

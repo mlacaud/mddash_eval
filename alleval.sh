@@ -1,17 +1,19 @@
 #!/bin/bash
 
-if [ $# -ne 2 ]
+if [ $# -ne 3 ]
 then
-  echo "Please write : ./alleval.sh [nbprofiles] [nbtests]"
+  echo "Please write : ./alleval.sh [nbprofiles] [nbtests] [nbtest3]"
   exit;
 fi
-nbprofiles=$(($1 - 1))
+nbprofiles=$1
 nbtest=$2
+nbtest3=$3
 
-bash percentq.sh $nbprofiles $nbtest
-bash amplq.sh $nbprofiles $nbtest
-bash nbqchange.sh $nbprofiles $nbtest
-bash overhead.sh $nbprofiles $nbtest
-bash rebuff.sh $nbprofiles $nbtest
+bash percentq.sh 6 10
+bash percentq2.sh 6 10
+bash amplq.sh $nbprofiles $nbtest $nbtest3
+bash nbqchange.sh $nbprofiles $nbtest $nbtest3
+bash overhead.sh $nbprofiles $nbtest $nbtest3
+bash rebuff.sh $nbprofiles $nbtest $nbtest3
 
 bash meanbitrate.sh $nbprofiles $nbtest

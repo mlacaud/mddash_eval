@@ -9,6 +9,6 @@ set style data histograms
 set xtics border in scale 0,0 nomirror
 set xtics  norangelimit
 set xtics   ()
-set title "Number of quality change over 20 tests"
+set title "Number of quality change per 8min of video"
 
 plot for [COL=2:7] 'toplot/nbqchangeout.txt' using COL:xtic(1) ti col

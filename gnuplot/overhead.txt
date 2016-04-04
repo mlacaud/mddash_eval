@@ -9,6 +9,6 @@ set style data histograms
 set xtics border in scale 0,0 nomirror
 set xtics  norangelimit
 set xtics   ()
-set title "Overhead"
+set title "Percent of overhead"
 
 plot for [COL=2:7] 'toplot/overheadout.txt' using COL:xtic(1) ti col

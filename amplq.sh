@@ -79,7 +79,7 @@ echo nbtest3 $nbtest3
     mean2=`awk 'NR>0{v+=$1;count++}END{print v/count}' tmp2.txt`
     mean3=`awk 'NR>0{v+=$1;count++}END{print v/count}' tmp3.txt`
 
-    echo ${i} ${mean1} ${mean2} ${mean3} >> parsed/amplqout.txt
+    echo $(($i+1)) ${mean1} ${mean2} ${mean3} >> parsed/amplqout.txt
     >tmp1.txt
     >tmp2.txt
     >tmp3.txt

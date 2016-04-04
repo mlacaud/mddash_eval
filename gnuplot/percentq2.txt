@@ -1,5 +1,5 @@
 set terminal svg size 1280,720
-set output 'gnuplot/svg/percentq.svg'
+set output 'gnuplot/svg/percentq2.svg'
 set boxwidth 0.9 absolute
 set style fill solid 1.00 border lt -1
 set key outside right top vertical Right noreverse noenhanced autotitle nobox
@@ -9,20 +9,19 @@ set style data histograms
 set xtics border in scale 0,0 nomirror offset 0,-0.7
 set xtics  norangelimit
 set xtics   ()
-set title "Percent bandwidth"
+set title "Percent of every bitrate for the 9 servers testbed"
 
-plot \
-'toplot/percentq2out.txt' using 2:xtic(1) ti col lc rgb "#FF0000", \
-'' u 3 ti col lc rgb "#FF8000", \
-'' u 4 ti col lc rgb "#FFFF00", \
-'' u 5 ti col lc rgb "#80FF00", \
-'' u 6 ti col lc rgb "#00FF00", \
-'' u 7 ti col lc rgb "#008000", \
-'' u 8 ti col lc rgb "#0080FF", \
-'' u 9 ti col lc rgb "#0000FF", \
-'' u 10 ti col lc rgb "#FF8000",\
-'' u 11 ti col lc rgb "#0000FF",
+plot for [COL=2:20] 'toplot/percentqout.txt' using COL:xtic(1) ti col
 
+#plot \
+#'toplot/percentq2out.txt' using 2:xtic(1) ti col lc rgb "#FF0000", \
+#'' u 3 ti col lc rgb "#FF8000", \
+#'' u 4 ti col lc rgb "#FFFF00", \
+#'' u 5 ti col lc rgb "#80FF00", \
+#'' u 6 ti col lc rgb "#00FF00", \
+#'' u 7 ti col lc rgb "#008000", \
+#'' u 8 ti col lc rgb "#0080FF", \
+#'' u 9 ti col lc rgb "#0000FF", \
 
 
 #plot for [COL=2:11] newhistogram "NP 1", \

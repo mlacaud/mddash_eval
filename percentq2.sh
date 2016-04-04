@@ -85,7 +85,7 @@ echo nbprofiles $nbprofiles
       mean=("${mean[@]}" `awk 'NR>0{v+=$1;count++}END{print v/count}' tmp${l}.txt`)
     done
 
-    echo ${i} ${mean[@]} >> parsed/percentq2out.txt
+    echo $(($i+1)) ${mean[@]} >> parsed/percentq2out.txt
     for l in `seq 1 8`
     do
       >tmp${l}.txt

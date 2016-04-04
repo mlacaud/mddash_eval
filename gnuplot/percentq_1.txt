@@ -1,17 +1,20 @@
 set terminal svg size 1280,720
-set output 'gnuplot/svg/percentq.svg'
+set output 'gnuplot/svg/percentq_1.svg'
 set boxwidth 0.9 absolute
 set style fill solid 1.00 border lt -1
 set key outside right top vertical Right noreverse noenhanced autotitle nobox
 set style histogram clustered gap 5 title textcolor lt -1
 set datafile missing '-'
 set style data histograms
-set xtics border in scale 0,0 nomirror offset 0,-0.7
+set xtics border in scale 0,0 nomirror offset 0,0.4
 set xtics  norangelimit
 set xtics   ()
 set title "Percent of every bitrate for the 3 servers testbed"
 
-plot for [COL=2:22] 'toplot/percentqout.txt' using COL:xtic(1) ti col
+plot newhistogram "mdc", for [COL=2:4] 'toplot/percentqout.txt' using COL:xtic(1) ti col,\
+newhistogram "mddash 3S", for [COL=5:12] 'toplot/percentqout.txt' using COL:xtic(1) ti col,\
+newhistogram "dash oracle 3S", for [COL=13:18] 'toplot/percentqout.txt' using COL:xtic(1) ti col,\
+newhistogram "mddash oracle 3S", for [COL=18:22] 'toplot/percentqout.txt' using COL:xtic(1) ti col
 
 #plot \
 #'toplot/percentqout.txt' using 2:xtic(1) ti col lc rgb "#FF0000", \

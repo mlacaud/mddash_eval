@@ -9,6 +9,6 @@ set style data histograms
 set xtics border in scale 0,0 nomirror
 set xtics  norangelimit
 set xtics   ()
-set title "Rebuffering per video"
+set title "Number of rebuffering per 8min video"
 
 plot for [COL=2:7] 'toplot/rebuffout.txt' using COL:xtic(1) ti col

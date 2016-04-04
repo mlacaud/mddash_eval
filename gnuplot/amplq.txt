@@ -9,6 +9,6 @@ set style data histograms
 set xtics border in scale 0,0 nomirror
 set xtics  norangelimit
 set xtics   ()
-set title "Amplitude quality"
+set title "Amplitude of the quality variations"
 
 plot for [COL=2:7] 'toplot/amplqout.txt' using COL:xtic(1) ti col
