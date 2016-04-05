@@ -72,9 +72,9 @@ echo nbtest3 $nbtest3
       done
     done
 
-    mean1=`awk 'NR>0{v+=$1;count++}END{print ((v/count)/2)/'$nbtest'}' tmp1.txt`
-    mean2=`awk 'NR>0{v+=$1;count++}END{print ((v/count)/2)/'$nbtest3'}' tmp2.txt`
-    mean3=`awk 'NR>0{v+=$1;count++}END{print ((v/count)/2)/'$nbtest'}' tmp3.txt`
+    mean1=`awk 'NR>0{v+=$1;count++}END{print (v/2)/'$nbtest'}' tmp1.txt`
+    mean2=`awk 'NR>0{v+=$1;count++}END{print (v/2)/'$nbtest3'}' tmp2.txt`
+    mean3=`awk 'NR>0{v+=$1;count++}END{print (v/2)/'$nbtest'}' tmp3.txt`
 
     echo $(($i+1)) ${mean1} ${mean2} ${mean3} >> parsed/nbqchangeout.txt
 

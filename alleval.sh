@@ -9,8 +9,8 @@ nbprofiles=$1
 nbtest=$2
 nbtest3=$3
 
-bash percentq.sh 6 10
-bash percentq2.sh 6 10
+bash percentq.sh $nbprofiles $nbtest
+bash percentq2.sh $nbprofiles $nbtest
 bash amplq.sh $nbprofiles $nbtest $nbtest3
 bash nbqchange.sh $nbprofiles $nbtest $nbtest3
 bash overhead.sh $nbprofiles $nbtest $nbtest3
